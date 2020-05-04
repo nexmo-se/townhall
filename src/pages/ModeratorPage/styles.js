@@ -32,12 +32,12 @@ export default makeStyles(() => ({
     paddingRight: 0
   },
   rightPanel: { 
-    flex: 1, 
+    flex: 2, 
     position: "relative",
     display: "flex", 
     flexWrap: "wrap",
     "& div": {
-      flexBasis: "100%",
+      flexBasis: "50%",
       flexGrow: 1
     }
   },

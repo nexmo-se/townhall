@@ -39,7 +39,11 @@ function useSubscriber(){
           insertMode: "append",
           width: "100%",
           height: "auto",
-          style: { nameDisplayMode: "off" }
+          name: data.name,
+          style: { 
+            buttonDisplayMode: "off",
+            nameDisplayMode: "on" 
+          }
         }, (err) => {
           if(err) reject(err);
           else resolve(subscriber);

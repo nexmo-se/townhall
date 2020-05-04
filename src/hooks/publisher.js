@@ -17,14 +17,18 @@ function usePublisher():Props{
     setPublisher(undefined);
   }
 
-  async function publish(containerId:string, user:User){
+  async function publish(containerId:string, user:User, nameDisplayMode?:string="on"){
     if(!mSession.session) throw new Error("You are not connected to session");
     const publisher = await new Promise((resolve, reject) => {
       const publisher = OT.initPublisher(containerId, {
         insertMode: "append",
         width: "100%",
         height: "auto",
-        style: { nameDisplayMode: "off" }
+        name: user.name,
+        style: { 
+          buttonDisplayMode: "off",
+          nameDisplayMode 
+        }
       }, (err) => {
         if(err) reject(err);
         else resolve(publisher);

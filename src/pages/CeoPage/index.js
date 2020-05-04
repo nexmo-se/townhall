@@ -21,7 +21,7 @@ import VideoControl from "components/VideoControl";
 import AskNameDialog from "components/AskNameDialog";
 
 function CeoPage(){
-  const [ user, setUser ] = React.useState<User|void>();
+  const [ user, setUser ] = React.useState<User|void>(new User("Presenter", "presenter"));
   const mSession = useSession();
   const mPublisher = usePublisher();
   const mStyles = useStyles();
@@ -44,7 +44,7 @@ function CeoPage(){
   }, [ user ]);
 
   React.useEffect(() => {
-    if(mSession.session) mPublisher.publish("main", user)
+    if(mSession.session) mPublisher.publish("main", user, "off")
   }, [ mSession.session ]);
 
   React.useEffect(() => {
