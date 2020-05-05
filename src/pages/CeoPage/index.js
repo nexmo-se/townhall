@@ -21,7 +21,7 @@ import VideoControl from "components/VideoControl";
 import AskNameDialog from "components/AskNameDialog";
 
 function CeoPage(){
-  const [ user, setUser ] = React.useState<User|void>(new User("Presenter", "presenter"));
+  const [ user, setUser ] = React.useState<User|void>();
   const mSession = useSession();
   const mPublisher = usePublisher();
   const mStyles = useStyles();

@@ -23,7 +23,8 @@ function AskNameDialog({ role, pin, onSubmit }:Props){
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if(onSubmit && inputPin === pin) {
+    if(!text) alert("Please enter your name")
+    else if(onSubmit && inputPin === pin) {
       const user = new User(text, role);
       onSubmit(user);
     }else if(inputPin !== pin) alert("Wrong PIN");
@@ -36,7 +37,7 @@ function AskNameDialog({ role, pin, onSubmit }:Props){
           <h3>Tell Me Your Name</h3>
         </div>
         <div className="Vlt-card__content">
-          <TextInput text={text} onChange={setText} placeholder="John Snow"/>
+          <TextInput text={text} onChange={setText} placeholder="Please enter your name"/>
           <TextInput type="password" text={inputPin} onChange={setInputPin} placeholder="PIN"/>
         </div>
         <div className="Vlt-card__footer Vlt-card__footer--noborder">

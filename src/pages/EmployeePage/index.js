@@ -23,7 +23,7 @@ import VideoControl from "components/VideoControl";
 import RaiseHandButton from "components/RaiseHandButton";
 
 function EmployeePage(){
-  const [ me, setMe ] = React.useState(new User("Frans", "participant"));
+  const [ me, setMe ] = React.useState();
   const [ presenter, setPresenter ] = React.useState<Subscriber|void>()
   const mSession = useSession();
   const mStyles = useStyles();

@@ -19,7 +19,7 @@ import LiveParticipantList from "components/LiveParticipantList";
 import LiveParticipantItem from "components/LiveParticipantItem";
 
 function ModeratorPage(){
-  const [ me, setMe ] = React.useState<User|void>(new User("Moderator", "moderator"));
+  const [ me, setMe ] = React.useState<User|void>();
   const mStyles = useStyles();
   const mSession = useSession();
   const mSubscriber = useSubscriber();
