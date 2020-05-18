@@ -8,6 +8,11 @@ function useSubscriber(){
   const [ subscribers, setSubscribers ] = React.useState<Array<Subscriber>>([]);
   const mSession = useSession();
 
+  function getContainerId(role:string):string{
+    if(role === "moderator") return "moderator"
+    else return "main"
+  }
+
   async function subscribe(streams:Array<Stream>, overrideContainer?:string){
     setSubscribed(streams);
 
@@ -31,9 +36,10 @@ function useSubscriber(){
     })
 
     await Promise.all(newStreams.map(async (stream) => {
-      const { connection } = stream;
+      const { connection, videoType } = stream;
       const data = JSON.parse(connection.data);
-      const containerId = (overrideContainer)? overrideContainer: (data.role !== "moderator")? "main": "moderator";
+      const containerId = (overrideContainer)? overrideContainer: 
+                          (videoType === "screen")? "screen": getContainerId(data.role)
       const subscriber = await new Promise((resolve, reject) => {
         const subscriber = mSession.session.subscribe(stream, containerId, {
           insertMode: "append",
