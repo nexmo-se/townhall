@@ -1,6 +1,8 @@
 // @flow
 
 import React from "react";
+import type { Node } from "react";
+
 import useSession from "hooks/session";
 import { Publisher, Stream } from "@opentok/client";
 
@@ -11,10 +13,11 @@ import VideoButton from "components/VideoButton";
 type Props = {
   sizeMultiplier?:number,
   style?:any|void,
-  publisher:Publisher|void
+  publisher:Publisher|void,
+  children?:Node
 }
 
-function VideoControl({ sizeMultiplier=1, style, publisher }:Props){
+function VideoControl({ sizeMultiplier=1, style, publisher, children }:Props){
   const [ hasAudio, setHasAudio ] = React.useState(true);
   const [ hasVideo, setHasVideo ] = React.useState(true);
   const mSession = useSession();
@@ -65,6 +68,7 @@ function VideoControl({ sizeMultiplier=1, style, publisher }:Props){
   if(!publisher) return null;
   return(
     <div style={{ ...styles.container, ...style }}>
+      {children}
       <VideoButton 
         hasVideo={hasVideo} 
         onClick={handleVideoClick}
