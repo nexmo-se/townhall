@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import clsx from "clsx";
 import CredentialAPI from "api/credential";
 import User from "entities/user";
 import { Subscriber } from "@opentok/client";
@@ -25,6 +26,7 @@ import RaiseHandButton from "components/RaiseHandButton";
 function EmployeePage(){
   const [ me, setMe ] = React.useState();
   const [ presenter, setPresenter ] = React.useState<Subscriber|void>()
+  const [ layout, setLayout ] = React.useState<string>("default");
   const mSession = useSession();
   const mStyles = useStyles();
   const mSubscriber = useSubscriber();
@@ -83,7 +85,17 @@ function EmployeePage(){
         mSession.session.unpublish(mPublisher.publisher)
       }
     }
-  }, [ mMessage.forceUnpublish ])
+  }, [ mMessage.forceUnpublish ]);
+
+  React.useEffect(() => {
+    const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
+      const { stream } = subscriber;
+      if(stream.videoType === "screen") return true;
+      else return false;
+    });
+    if(screenSubscribers.length > 0) setLayout("sharescreen")
+    else setLayout("default");
+  }, [ mSubscriber.subscribers ])
 
   if(!me && !mSession.session) {
     return (
@@ -98,7 +110,20 @@ function EmployeePage(){
   else if(me && mSession.session) return (
     <div className={mStyles.container}>
       <div className={mStyles.leftContainer}>
-        <div id="main" className={mStyles.videoContainer}/>
+        <div 
+          id="screen" 
+          className={clsx(
+            mStyles.videoContainer,
+            (layout === "sharescreen")? mStyles.visible: mStyles.hidden
+          )} 
+        />
+        <div
+          id="main" 
+          className={clsx(
+            mStyles.videoContainer,
+            (layout === "sharescreen")? mStyles.smallVideoContainer: ""
+          )}
+        />        
         <BlackLayer/>
         <WhiteLayer/>
         <BigName name={me.name} style={{ position: "absolute", top: 32, left: 32, zIndex: 2 }}/>

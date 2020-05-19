@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import clsx from "clsx";
 import User from "entities/user";
 import CredentialAPI from "api/credential";
 
@@ -17,13 +18,16 @@ import RaisedHandList from "components/RaisedHandList";
 import ParticipantList from "components/ParticipantList";
 import LiveParticipantList from "components/LiveParticipantList";
 import LiveParticipantItem from "components/LiveParticipantItem";
+import ShareScreenButton from "components/ShareScreenButton";
 
 function ModeratorPage(){
-  const [ me, setMe ] = React.useState<User|void>();
+  const [ me, setMe ] = React.useState<User|void>(new User("Moderator", "moderator"));
+  const [ layout, setLayout ] = React.useState<string>("default");
   const mStyles = useStyles();
   const mSession = useSession();
   const mSubscriber = useSubscriber();
   const mPublisher = usePublisher();
+  const mScreenPublisher = usePublisher();
 
   function handleNameSubmit(user:User){
     setMe(user);
@@ -33,6 +37,15 @@ function ModeratorPage(){
     if(me){
       const credential = await CredentialAPI.generateCredential("moderator", me.toJSON())
       await mSession.connect(credential);
+    }
+  }
+
+  async function handleShareScreenClick(){
+    if(mSession.session && !mScreenPublisher.stream){
+      const screenUser = new User("sharescreen", "sharescreen");
+      await mScreenPublisher.publish("screen", screenUser, "off", { videoSource: "screen" });
+    }else if(mSession.session && mScreenPublisher.stream){
+      mSession.session.unpublish(mScreenPublisher.publisher);
     }
   }
 
@@ -47,6 +60,16 @@ function ModeratorPage(){
   React.useEffect(() => {
     if(mSession.session) mSubscriber.subscribe(mSession.streams, "main");
   }, [ mSession.streams, mSession.session ]);
+
+  React.useEffect(() => {
+    const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
+      const { stream } = subscriber;
+      if(stream.videoType === "screen") return true;
+      else return false;
+    });
+    if(screenSubscribers.length > 0 || mScreenPublisher.stream) setLayout("sharescreen")
+    else if(!mScreenPublisher.stream) setLayout("default");
+  }, [ mSubscriber.subscribers, mScreenPublisher.stream ]);
 
   if(!me && !mSession.session) {
     return (
@@ -85,7 +108,19 @@ function ModeratorPage(){
         <div className={mStyles.chat} style={{ flexBasis: "50%", borderBottom: "1px solid #e7ebee" }}>
           <h4 className="Vlt-center">LIVE PARTICIPANTS</h4>
           <LiveParticipantList subscribers={mSubscriber.subscribers}>
-            <LiveParticipantItem user={me} publisher={mPublisher.publisher} />
+            <LiveParticipantItem 
+              user={me} 
+              publisher={mPublisher.publisher} 
+              additionalControls={(
+                <ShareScreenButton 
+                  size={32}
+                  fontSize={16}
+                  style={{ marginRight: 8 }}
+                  onClick={handleShareScreenClick}
+                  isSharing={!!mScreenPublisher.stream}
+                />
+              )}
+            />
           </LiveParticipantList>
         </div>
         <div className={mStyles.chat} style={{ flexBasis: "50%", paddingTop: 32 }}>
@@ -93,7 +128,21 @@ function ModeratorPage(){
           <ParticipantList/>
         </div>
       </div>
-      <div id="main" className={mStyles.rightPanel}>
+      <div className={mStyles.rightPanel}>
+        <div 
+          id="screen" 
+          className={clsx(
+            mStyles.videoContainer,
+            (layout === "sharescreen")? mStyles.visible: mStyles.hidden
+          )} 
+        />
+        <div 
+          id="main"
+          className={clsx(
+            mStyles.videoContainer,
+            (layout === "sharescreen")? mStyles.smallVideoContainer: ""
+          )}
+        />
         <LiveBadge className={mStyles.liveBadge} />
       </div>
     </div>

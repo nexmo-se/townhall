@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import clsx from "clsx";
 import CredentialAPI from "api/credential";
 import User from "entities/user";
 
@@ -19,11 +20,14 @@ import ChatInput from "components/ChatInput";
 import FullPageLoading from "components/FullPageLoading";
 import VideoControl from "components/VideoControl";
 import AskNameDialog from "components/AskNameDialog";
+import ShareScreenButton from "components/ShareScreenButton";
 
 function CeoPage(){
-  const [ user, setUser ] = React.useState<User|void>();
+  const [ user, setUser ] = React.useState<User|void>(new User("Presenter", "presenter"));
+  const [ layout, setLayout ] = React.useState<string>("default");
   const mSession = useSession();
   const mPublisher = usePublisher();
+  const mScreenPublisher = usePublisher();
   const mStyles = useStyles();
   const mMessage = useMessage();
   const mSubscriber = useSubscriber();
@@ -36,6 +40,15 @@ function CeoPage(){
     if(user){
       const credential = await CredentialAPI.generateCredential("publisher", user.toJSON());
       await mSession.connect(credential);
+    }
+  }
+
+  async function handleShareScreenClick(){
+    if(mSession.session && !mScreenPublisher.stream){
+      const screenUser = new User("sharescreen", "sharescreen");
+      await mScreenPublisher.publish("screen", screenUser, "off", { videoSource: "screen" });
+    }else if(mSession.session && mScreenPublisher.stream){
+      mSession.session.unpublish(mScreenPublisher.publisher);
     }
   }
 
@@ -86,6 +99,16 @@ function CeoPage(){
     }
   }, [ mSession.session, mMessage.forcePublish ]);
 
+  React.useEffect(() => {
+    const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
+      const { stream } = subscriber;
+      if(stream.videoType === "screen") return true;
+      else return false;
+    });
+    if(screenSubscribers.length > 0 || mScreenPublisher.stream) setLayout("sharescreen")
+    else if(!mScreenPublisher.stream) setLayout("default");
+  }, [ mSubscriber.subscribers, mScreenPublisher.stream ]);
+
   if(!user && !mSession.session){
     return (
       <AskNameDialog 
@@ -100,7 +123,20 @@ function CeoPage(){
     <React.Fragment>
       <div className={mStyles.container}>
         <div className={mStyles.leftContainer}>
-          <div id="main" className={mStyles.videoContainer}/>
+          <div 
+            id="screen" 
+            className={clsx(
+              mStyles.videoContainer,
+              (layout === "sharescreen")? mStyles.visible: mStyles.hidden
+            )} 
+          />
+          <div 
+            id="main" 
+            className={clsx(
+              mStyles.videoContainer,
+              (layout === "sharescreen")? mStyles.smallVideoContainer: ""
+            )}
+          />
           <BlackLayer/>
           <WhiteLayer/>
           <BigName 
@@ -114,7 +150,13 @@ function CeoPage(){
           />
           <div className={mStyles.logoContainer}>
             <LiveBadge/>
-            <VideoControl publisher={mPublisher.publisher} />
+            <VideoControl publisher={mPublisher.publisher}>
+              <ShareScreenButton 
+                style={{ marginRight: 8 }}
+                onClick={handleShareScreenClick}
+                isSharing={!!mScreenPublisher.stream}
+              />
+            </VideoControl>
           </div>
           <VonageLogo 
             style={{ 

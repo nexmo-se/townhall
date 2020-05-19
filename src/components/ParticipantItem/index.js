@@ -45,7 +45,7 @@ function ParticipantItem({ user }:Props){
       }).length > 0
       setIsPublishing(isPublishing);
     }
-  }, [ mSession.streams ])
+  }, [ mSession.streams, user ])
 
   return (
     <div className="Vlt-card Vlt-card--plain Vlt-bg-aqua-lighter Vlt-card--lesspadding" style={{ marginTop: 8, marginBottom: 4 }}>
