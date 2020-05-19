@@ -1,5 +1,6 @@
 // @flow
 import React from "react";
+import clsx from "clsx";
 import User from "entities/user";
 import CredentialAPI from "api/credential";
 
@@ -19,7 +20,8 @@ import LiveParticipantList from "components/LiveParticipantList";
 import LiveParticipantItem from "components/LiveParticipantItem";
 
 function ModeratorPage(){
-  const [ me, setMe ] = React.useState<User|void>();
+  const [ me, setMe ] = React.useState<User|void>(new User("Moderator", "moderator"));
+  const [ layout, setLayout ] = React.useState<string>("default");
   const mStyles = useStyles();
   const mSession = useSession();
   const mSubscriber = useSubscriber();
@@ -47,6 +49,16 @@ function ModeratorPage(){
   React.useEffect(() => {
     if(mSession.session) mSubscriber.subscribe(mSession.streams, "main");
   }, [ mSession.streams, mSession.session ]);
+
+  React.useEffect(() => {
+    const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
+      const { stream } = subscriber;
+      if(stream.videoType === "screen") return true;
+      else return false;
+    });
+    if(screenSubscribers.length > 0) setLayout("sharescreen")
+    else setLayout("default");
+  }, [ mSubscriber.subscribers ])
 
   if(!me && !mSession.session) {
     return (
@@ -93,7 +105,21 @@ function ModeratorPage(){
           <ParticipantList/>
         </div>
       </div>
-      <div id="main" className={mStyles.rightPanel}>
+      <div className={mStyles.rightPanel}>
+        <div 
+          id="screen" 
+          className={clsx(
+            mStyles.videoContainer,
+            (layout === "sharescreen")? mStyles.visible: mStyles.hidden
+          )} 
+        />
+        <div 
+          id="main"
+          className={clsx(
+            mStyles.videoContainer,
+            (layout === "sharescreen")? mStyles.smallVideoContainer: ""
+          )}
+        />
         <LiveBadge className={mStyles.liveBadge} />
       </div>
     </div>

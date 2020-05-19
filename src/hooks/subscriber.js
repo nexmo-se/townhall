@@ -38,8 +38,8 @@ function useSubscriber(){
     await Promise.all(newStreams.map(async (stream) => {
       const { connection, videoType } = stream;
       const data = JSON.parse(connection.data);
-      const containerId = (overrideContainer)? overrideContainer: 
-                          (videoType === "screen")? "screen": getContainerId(data.role)
+      const containerId = (videoType === "screen")? "screen": 
+                          (overrideContainer)? overrideContainer: getContainerId(data.role)
       const subscriber = await new Promise((resolve, reject) => {
         const subscriber = mSession.session.subscribe(stream, containerId, {
           insertMode: "append",
