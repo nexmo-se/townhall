@@ -19,8 +19,12 @@ function ParticipantList(){
       user.connection = connection;
       user.id = connection.id;
       return user;
+    }).sort((a, b) => {
+      if(a.name < b.name) return -1
+      else if(a.name > b.name) return 1;
+      else return 0;
     })
-    setParticipants(participants);
+    setParticipants((participants));
   }, [ mSession.connections ]);
 
   return (
