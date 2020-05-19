@@ -62,7 +62,7 @@ function usePublisher():Props{
       setPublisher(publisher);
     }catch(err){
       if(err.name === "OT_USER_MEDIA_ACCESS_DENIED"){
-        alert("Please enable camera and microphone permissions to continue.")
+        alert("Please enable camera and microphone permissions to continue. Please refresh the page.")
       }else throw err;
     }
   }
