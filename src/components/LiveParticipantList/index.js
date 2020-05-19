@@ -20,7 +20,10 @@ function LiveParticipantList({ children, subscribers }:Props){
   const mStyles = useStyles();
 
   React.useEffect(() => {
-    const participants = subscribers.map((subscriber) => {
+    const participants = subscribers.filter((subscriber) => {
+      if(subscriber.stream.videoType === "screen") return false;
+      else return true;
+    }).map((subscriber) => {
       const { connection } = subscriber.stream;
       const data = JSON.parse(connection.data);
       const user = User.fromJSON(data);
