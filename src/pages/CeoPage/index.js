@@ -105,14 +105,9 @@ function CeoPage(){
       if(stream.videoType === "screen") return true;
       else return false;
     });
-    if(screenSubscribers.length > 0) setLayout("sharescreen")
-    else setLayout("default");
-  }, [ mSubscriber.subscribers ])
-
-  React.useEffect(() => {
-    if(mScreenPublisher.stream) setLayout("sharescreen");
-    else setLayout("default")
-  }, [ mScreenPublisher.stream ])
+    if(screenSubscribers.length > 0 || mScreenPublisher.stream) setLayout("sharescreen")
+    else if(!mScreenPublisher.stream) setLayout("default");
+  }, [ mSubscriber.subscribers, mScreenPublisher.stream ]);
 
   if(!user && !mSession.session){
     return (
