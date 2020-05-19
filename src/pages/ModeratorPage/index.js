@@ -18,6 +18,7 @@ import RaisedHandList from "components/RaisedHandList";
 import ParticipantList from "components/ParticipantList";
 import LiveParticipantList from "components/LiveParticipantList";
 import LiveParticipantItem from "components/LiveParticipantItem";
+import ShareScreenButton from "components/ShareScreenButton";
 
 function ModeratorPage(){
   const [ me, setMe ] = React.useState<User|void>(new User("Moderator", "moderator"));
@@ -26,6 +27,7 @@ function ModeratorPage(){
   const mSession = useSession();
   const mSubscriber = useSubscriber();
   const mPublisher = usePublisher();
+  const mScreenPublisher = usePublisher();
 
   function handleNameSubmit(user:User){
     setMe(user);
@@ -35,6 +37,15 @@ function ModeratorPage(){
     if(me){
       const credential = await CredentialAPI.generateCredential("moderator", me.toJSON())
       await mSession.connect(credential);
+    }
+  }
+
+  async function handleShareScreenClick(){
+    if(mSession.session && !mScreenPublisher.stream){
+      const screenUser = new User("sharescreen", "sharescreen");
+      await mScreenPublisher.publish("screen", screenUser, "off", { videoSource: "screen" });
+    }else if(mSession.session && mScreenPublisher.stream){
+      mSession.session.unpublish(mScreenPublisher.publisher);
     }
   }
 
@@ -58,7 +69,12 @@ function ModeratorPage(){
     });
     if(screenSubscribers.length > 0) setLayout("sharescreen")
     else setLayout("default");
-  }, [ mSubscriber.subscribers ])
+  }, [ mSubscriber.subscribers ]);
+
+  React.useEffect(() => {
+    if(mScreenPublisher.stream) setLayout("sharescreen")
+    else setLayout("default");
+  }, [ mScreenPublisher.stream ])
 
   if(!me && !mSession.session) {
     return (
@@ -97,7 +113,19 @@ function ModeratorPage(){
         <div className={mStyles.chat} style={{ flexBasis: "50%", borderBottom: "1px solid #e7ebee" }}>
           <h4 className="Vlt-center">LIVE PARTICIPANTS</h4>
           <LiveParticipantList subscribers={mSubscriber.subscribers}>
-            <LiveParticipantItem user={me} publisher={mPublisher.publisher} />
+            <LiveParticipantItem 
+              user={me} 
+              publisher={mPublisher.publisher} 
+              additionalControls={(
+                <ShareScreenButton 
+                  size={32}
+                  fontSize={16}
+                  style={{ marginRight: 8 }}
+                  onClick={handleShareScreenClick}
+                  isSharing={!!mScreenPublisher.stream}
+                />
+              )}
+            />
           </LiveParticipantList>
         </div>
         <div className={mStyles.chat} style={{ flexBasis: "50%", paddingTop: 32 }}>

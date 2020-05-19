@@ -43,10 +43,10 @@ function CeoPage(){
     }
   }
 
-  function handleShareScreenClick(){
+  async function handleShareScreenClick(){
     if(mSession.session && !mScreenPublisher.stream){
       const screenUser = new User("sharescreen", "sharescreen");
-      mScreenPublisher.publish("screen", screenUser, "off", { videoSource: "screen" });
+      await mScreenPublisher.publish("screen", screenUser, "off", { videoSource: "screen" });
     }else if(mSession.session && mScreenPublisher.stream){
       mSession.session.unpublish(mScreenPublisher.publisher);
     }
@@ -149,7 +149,7 @@ function CeoPage(){
               <ShareScreenButton 
                 style={{ marginRight: 8 }}
                 onClick={handleShareScreenClick}
-                isSharing={layout === "sharescreen"}
+                isSharing={!!mScreenPublisher.stream}
               />
             </VideoControl>
           </div>

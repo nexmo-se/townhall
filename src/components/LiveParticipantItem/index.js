@@ -1,24 +1,29 @@
 // @flow
 import React from "react";
+import type { Node } from "react";
+
+import Avatar from 'react-avatar';
 import clsx from "clsx";
 import User from "entities/user";
 import { Publisher, Subscriber } from "@opentok/client";
 
 import useSession from "hooks/session";
+import usePublisher from "hooks/publisher";
 
-import Avatar from 'react-avatar';
 import VideoButton from "components/VideoButton";
 import MuteButton from "components/MuteButton";
 import HangupButton from "components/HangupButton";
+import ShareScreenButton from "components/ShareScreenButton";
 
 type Props = {
   user:User,
   className?:any,
   publisher?:Publisher,
-  subscriber?:Subscriber
+  subscriber?:Subscriber,
+  additionalControls?:Node
 }
 
-function LiveParticipantItem({ user, className, publisher, subscriber }:Props){
+function LiveParticipantItem({ user, className, publisher, subscriber, additionalControls }:Props){
   const [ hasVideo, setHasVideo ] = React.useState<boolean>(true);
   const [ hasAudio, setHasAudio ] = React.useState<boolean>(true);
   const mSession = useSession();
@@ -94,6 +99,7 @@ function LiveParticipantItem({ user, className, publisher, subscriber }:Props){
         <div style={{ display: "flex", flexDirection: "column", maxWidth: 200  }}>
           <p><b>{user.name}</b></p>   
           <div style={{ display: "flex", flexDirection: "row" }}>
+            {additionalControls}
             <VideoButton 
               size={32} 
               fontSize={16} 
