@@ -100,6 +100,16 @@ function CeoPage(){
   }, [ mSession.session, mMessage.forcePublish ]);
 
   React.useEffect(() => {
+    const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
+      const { stream } = subscriber;
+      if(stream.videoType === "screen") return true;
+      else return false;
+    });
+    if(screenSubscribers.length > 0) setLayout("sharescreen")
+    else setLayout("default");
+  }, [ mSubscriber.subscribers ])
+
+  React.useEffect(() => {
     if(mScreenPublisher.stream) setLayout("sharescreen");
     else setLayout("default")
   }, [ mScreenPublisher.stream ])
