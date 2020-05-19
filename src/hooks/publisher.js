@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import OT, { Publisher, Stream } from "@opentok/client";
+import OT, { Publisher, Stream, OTError } from "@opentok/client";
 import User from "entities/user";
 import useSession from "hooks/session";
 
@@ -28,37 +28,43 @@ function usePublisher():Props{
   }
 
   async function publish(containerId:string, user:User, nameDisplayMode?:string="on", extraData?:any){
-    if(!mSession.session) throw new Error("You are not connected to session");
-    const publisher = await new Promise((resolve, reject) => {
-      const options = {
-        insertMode: "append",
-        width: "100%",
-        height: "auto",
-        name: user.name,
-        style: { 
-          buttonDisplayMode: "off",
-          nameDisplayMode 
+    try{
+      if(!mSession.session) throw new Error("You are not connected to session");
+      const publisher = await new Promise((resolve, reject) => {
+        const options = {
+          insertMode: "append",
+          width: "100%",
+          height: "auto",
+          name: user.name,
+          style: { 
+            buttonDisplayMode: "off",
+            nameDisplayMode 
+          }
         }
-      }
-      const finalOptions = Object.assign({}, options, extraData);
-      const publisher = OT.initPublisher(containerId, finalOptions, (err) => {
-        if(err) reject(err);
-        else resolve(publisher);
+        const finalOptions = Object.assign({}, options, extraData);
+        const publisher = OT.initPublisher(containerId, finalOptions, (err) => {
+          if(err) reject(err);
+          else resolve(publisher);
+        });
       });
-    });
 
-    publisher.on("destroyed", handleDestroyed);
-    publisher.on("streamCreated", handleStreamCreated);
-    publisher.on("streamDestroyed", handleStreamDestroyed);
+      publisher.on("destroyed", handleDestroyed);
+      publisher.on("streamCreated", handleStreamCreated);
+      publisher.on("streamDestroyed", handleStreamDestroyed);
 
-    await new Promise((resolve, reject) => {
-      mSession.session.publish(publisher, (err) => {
-        if(err) reject(err);
-        else resolve();
-      })
-    });
+      await new Promise((resolve, reject) => {
+        mSession.session.publish(publisher, (err) => {
+          if(err) reject(err);
+          else resolve();
+        })
+      });
 
-    setPublisher(publisher);
+      setPublisher(publisher);
+    }catch(err){
+      if(err.name === "OT_USER_MEDIA_ACCESS_DENIED"){
+        alert("Please enable camera and microphone permissions to continue.")
+      }else throw err;
+    }
   }
 
   return { publish, publisher, stream }
