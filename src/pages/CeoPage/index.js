@@ -23,7 +23,7 @@ import AskNameDialog from "components/AskNameDialog";
 import ShareScreenButton from "components/ShareScreenButton";
 
 function CeoPage(){
-  const [ user, setUser ] = React.useState<User|void>(new User("FRANS HUANG", "presenter"));
+  const [ user, setUser ] = React.useState<User|void>(new User("Presenter", "presenter"));
   const [ layout, setLayout ] = React.useState<string>("default");
   const mSession = useSession();
   const mPublisher = usePublisher();

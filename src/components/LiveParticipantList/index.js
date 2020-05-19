@@ -29,6 +29,10 @@ function LiveParticipantList({ children, subscribers }:Props){
       const user = User.fromJSON(data);
       user.subscriber = subscriber;
       return user;
+    }).sort((a, b) => {
+      if(a.name < b.name) return -1;
+      else if(a.name > b.name) return 1;
+      else return 0;
     })
     setParticipants(participants);
   }, [ subscribers ]);

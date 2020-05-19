@@ -84,7 +84,7 @@ function LiveParticipantItem({ user, className, publisher, subscriber, additiona
         setHasAudio(mSession.changedStream.stream.hasAudio);
       }
     }
-  }, [ mSession.changedStream ]);
+  }, [ mSession.changedStream, publisher, subscriber ]);
 
   return (
     <div 
