@@ -21,7 +21,7 @@ import LiveParticipantItem from "components/LiveParticipantItem";
 import ShareScreenButton from "components/ShareScreenButton";
 
 function ModeratorPage(){
-  const [ me, setMe ] = React.useState<User|void>(new User("Moderator", "moderator"));
+  const [ me, setMe ] = React.useState<User|void>();
   const [ layout, setLayout ] = React.useState<string>("default");
   const mStyles = useStyles();
   const mSession = useSession();
