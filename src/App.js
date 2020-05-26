@@ -19,8 +19,6 @@ function App() {
             <Route path="/presenter" component={CeoPage}/>
             <Route path="/participant" component={EmployeePage}/>
             <Route path="/moderator" component={ModeratorPage}/>
-            <Route path="/thank-you" component={ThankYouPage}/>
-            <Route path="/" component={LandingPage}/>
           </Switch>
         </MessageProvider>
       </SessionProvider>
