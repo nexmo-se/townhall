@@ -1,37 +1,28 @@
+// @flow
 import React from "react";
+import clsx from "clsx";
 import posed from "react-pose";
 
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';
+import ControlButton from "components/ControlButton";
 
-function VideoButton(props){
-  const { size, fontSize, style, hasVideo } = props;
-  const [ isBig, setIsBig ] = React.useState(false);
+type Props = {
+  size?:number,
+  fontSize?:number,
+  hasVideo:boolean,
+  loading?:boolean,
+  onClick?:Function
+}
 
-  const styles = { 
-    hangup: { 
-      width: size, height: size, borderRadius: "50%", cursor: "pointer",
-      fontSize: fontSize, display: "flex", alignItems: "center", justifyContent: "center"
-    }
-  }
-
-  const Container = posed.div({
-    big: { scale: 1.1 },
-    small: { scale: 1 }
-  });
-
-  const handleMouseEnter = () => setIsBig(true);
-  const handleMouseLeave = () => setIsBig(false);
-  const handleClick = () => {
-    if(props.onClick) props.onClick();
-  }
-
+function VideoButton({ hasVideo, ...props }:Props){
   return (
-    <Container 
-      pose={isBig? "big": "small"} className={`${hasVideo? "Vlt-bg-green": "Vlt-bg-red"} Vlt-white`} style={{ ...styles.hangup, ...style }}
-      onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick}>
+    <ControlButton 
+      {...props}
+      active={hasVideo}
+    >
       {hasVideo? <VideocamIcon fontSize="inherit"/>: <VideocamOffIcon fontSize="inherit"/>}
-    </Container>
+    </ControlButton>
   )
 }
 

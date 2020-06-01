@@ -3,6 +3,7 @@
 import React from "react";
 import type { Node } from "react";
 
+import useStyles from "./styles";
 import useSession from "hooks/session";
 import { Publisher, Stream } from "@opentok/client";
 
@@ -21,24 +22,14 @@ function VideoControl({ sizeMultiplier=1, style, publisher, children }:Props){
   const [ hasAudio, setHasAudio ] = React.useState(true);
   const [ hasVideo, setHasVideo ] = React.useState(true);
   const mSession = useSession();
-
-  const listener = React.useRef(null);
-  const streamPropertyListener = React.useRef(null);
-
-  const styles = {
-    container: { 
-      width: "100%", padding: 16, display: "flex", 
-      flexDirection: "row", alignItems: "center", justifyContent: "center",
-      paddingRight: 0,
-    }
-  }
+  const mStyles = useStyles();
 
   function handleVideoClick(){
-    setHasVideo((prevHasVideo) => !prevHasVideo);
+    setHasVideo((prevVideo) => !prevVideo);
   }
 
   function handleAudioClick(){
-    setHasAudio((prevHasAudio) => !prevHasAudio);
+    setHasAudio((prevAudio) => !prevAudio);
   }
 
   function handleHangupClick(){
@@ -46,13 +37,16 @@ function VideoControl({ sizeMultiplier=1, style, publisher, children }:Props){
   }
 
   React.useEffect(() => {
-    if(mSession.changedStream.stream){
-      const { connection:otherConnection } = mSession.changedStream.stream;
+    const { changedStream } = mSession;
+    if(changedStream){
+      const { connection:otherConnection } = changedStream.stream;
       const { connection:myConnection } = mSession.session;
-      console.log(otherConnection.id, myConnection.id);
-      if(otherConnection.id === myConnection.id){
-        setHasAudio(mSession.changedStream.stream.hasAudio);
-        setHasVideo(mSession.changedStream.stream.hasVideo);
+      if(otherConnection.id === myConnection.id && publisher?.stream.id === changedStream.stream.id){
+        switch(changedStream.changedProperty){
+          case "hasAudio": return setHasAudio(changedStream.newValue);
+          case "hasVideo": return setHasVideo(changedStream.newValue);
+          default: return;
+        }
       }
     }
   }, [ mSession.changedStream ]);
@@ -67,7 +61,7 @@ function VideoControl({ sizeMultiplier=1, style, publisher, children }:Props){
 
   if(!publisher) return null;
   return(
-    <div style={{ ...styles.container, ...style }}>
+    <div className={mStyles.root}>
       {children}
       <VideoButton 
         hasVideo={hasVideo} 

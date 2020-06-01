@@ -14,12 +14,12 @@ export const SessionContext = React.createContext<any>({});
 function SessionProvider({ children }:Props){
   const [ isConnected, setIsConnected ] = React.useState<boolean>(false);
   const [ session, setSession ] = React.useState<Session>();
-  const [ changedStream, setChangedStream ] = React.useState<Stream>({ stream: undefined });
+  const [ changedStream, setChangedStream ] = React.useState<any>();
   const [ streams, setStreams ] = React.useState<Array<Stream>>([]);
   const [ connections, setConnections ] = React.useState<Array<Connection>>([]);
 
-  function handleStreamPropertyChanged({ stream }){
-    setChangedStream({ stream, token: uuid() });
+  function handleStreamPropertyChanged({ stream, changedProperty, newValue, oldValue }){
+    setChangedStream({ stream, changedProperty, newValue, oldValue, token: uuid() });
   }
 
   function handleConnectionCreated({ connection }){

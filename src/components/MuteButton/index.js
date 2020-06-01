@@ -1,37 +1,28 @@
+// @flow
 import React from "react";
 import posed from "react-pose";
 
 import MicIcon from '@material-ui/icons/Mic';
 import MicOffIcon from '@material-ui/icons/MicOff';
+import ControlButton from "components/ControlButton";
 
-function MuteButton(props){
-  const { style, size, fontSize, hasAudio } = props;
-  const [ isBig, setIsBig ] = React.useState(false);
+type Props = {
+  size?:number,
+  fontSize?:number,
+  hasAudio:boolean,
+  loading?:boolean,
+  onClick?:Function
+}
 
-  const styles = { 
-    hangup: { 
-      width: size, height: size, borderRadius: "50%", cursor: "pointer",
-      fontSize: fontSize, display: "flex", alignItems: "center", justifyContent: "center"
-    }
-  }
-
-  const Container = posed.div({
-    big: { scale: 1.1 },
-    small: { scale: 1 }
-  });
-
-  const handleMouseEnter = () => setIsBig(true);
-  const handleMouseLeave = () => setIsBig(false);
-  const handleClick = () => {
-    if(props.onClick) props.onClick();
-  }
+function MuteButton({ hasAudio, ...props }:Props){
 
   return (
-    <Container 
-      pose={isBig? "big": "small"} className={`${hasAudio? "Vlt-bg-green": "Vlt-bg-red"} Vlt-white`} style={{ ...styles.hangup, ...style }}
-      onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} onClick={handleClick}>
+    <ControlButton
+      {...props}
+      active={hasAudio}
+    >
       {hasAudio? <MicIcon fontSize="inherit"/>: <MicOffIcon fontSize="inherit"/>}
-    </Container>
+    </ControlButton>
   )
 }
 

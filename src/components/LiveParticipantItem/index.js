@@ -76,10 +76,12 @@ function LiveParticipantItem({ user, className, publisher, subscriber, additiona
 
   React.useEffect(() => {
     const pubsub = (publisher)? publisher: (subscriber)? subscriber: null;
-    if(pubsub && mSession.changedStream.stream){
+    const { changedStream } = mSession;
+    if(pubsub && changedStream){
       const { connection:localConnection } = pubsub.stream;
       const { connection:remoteConnection } = mSession.changedStream.stream;
-      if(localConnection.id === remoteConnection.id){
+      const { stream:publisherStream } = pubsub;
+      if(localConnection.id === remoteConnection.id && publisherStream.id === changedStream.stream.id){
         setHasVideo(mSession.changedStream.stream.hasVideo);
         setHasAudio(mSession.changedStream.stream.hasAudio);
       }
