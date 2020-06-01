@@ -1,10 +1,8 @@
 // @flow
 import React from "react"
-import MessageAPI from "api/message";
 import useMessage from "hooks/message";
 
 import ChatBubble from "components/ChatBubble";
-import PendingChatBubble from "components/PendingChatBubble";
 
 function ChatList(){
   const mMessage = useMessage();
@@ -17,10 +15,6 @@ function ChatList(){
     }
   }
 
-  const handleRenderItem = ({ sender, text, isApproved }) => {
-    if(isApproved) return <ChatBubble name={sender.name} message={text}/>
-  }
-
   React.useEffect(() => {
     list.current.scrollTop = list.current.scrollHeight;
   }, [ mMessage.messages ])
@@ -30,7 +24,7 @@ function ChatList(){
       {mMessage.messages.map((message) => {
         if(message.isApproved){
           return <ChatBubble name={message.sender.name} message={message.text} />
-        }
+        }else return null;
       })}
     </div>
   )

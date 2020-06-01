@@ -5,7 +5,7 @@ import type { Node } from "react";
 
 import useStyles from "./styles";
 import useSession from "hooks/session";
-import { Publisher, Stream } from "@opentok/client";
+import { Publisher } from "@opentok/client";
 
 import HangupButton from "components/HangupButton";
 import MuteButton from "components/MuteButton";

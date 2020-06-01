@@ -20,8 +20,8 @@ function ParticipantList(){
       user.id = connection.id;
       return user;
     }).sort((a, b) => {
-      if(a.name < b.name) return -1
-      else if(a.name > b.name) return 1;
+      if(a.name.toLowerCase() < b.name.toLowerCase()) return -1
+      else if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
       else return 0;
     })
     setParticipants((participants));

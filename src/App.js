@@ -3,11 +3,9 @@ import React from 'react';
 import SessionProvider from 'contexts/session';
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
-import LandingPage from "pages/LandingPage";
 import CeoPage from "pages/CeoPage";
 import EmployeePage from "pages/EmployeePage";
 import ModeratorPage from "pages/ModeratorPage";
-import ThankYouPage from "pages/ThankYouPage";
 import MessageProvider from 'contexts/message';
 
 function App() {

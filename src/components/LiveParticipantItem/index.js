@@ -5,15 +5,12 @@ import type { Node } from "react";
 import Avatar from 'react-avatar';
 import clsx from "clsx";
 import User from "entities/user";
-import { Publisher, Subscriber } from "@opentok/client";
-
 import useSession from "hooks/session";
-import usePublisher from "hooks/publisher";
+import { Publisher, Subscriber } from "@opentok/client";
 
 import VideoButton from "components/VideoButton";
 import MuteButton from "components/MuteButton";
 import HangupButton from "components/HangupButton";
-import ShareScreenButton from "components/ShareScreenButton";
 
 type Props = {
   user:User,

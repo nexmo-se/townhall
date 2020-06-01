@@ -27,7 +27,7 @@ function useSubscriber(){
     console.log(subscribedIDs, streamIDs)
     console.log(newStreams, removedStreams);
     console.log("=========");
-    removedStreams.map((stream) => {
+    removedStreams.forEach((stream) => {
       setSubscribers((prevSubscribers) => {
         return prevSubscribers.filter((subscriber) => {
           return !!subscriber.stream

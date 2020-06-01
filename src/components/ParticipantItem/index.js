@@ -4,8 +4,6 @@ import Avatar from 'react-avatar';
 import User from "entities/user";
 import useSession from "hooks/session";
 
-import RoundedButton from "components/RoundedButton";
-
 type Props = { 
   user:User
 };

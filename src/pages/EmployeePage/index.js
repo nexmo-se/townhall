@@ -3,7 +3,6 @@ import React from "react";
 import clsx from "clsx";
 import CredentialAPI from "api/credential";
 import User from "entities/user";
-import { Subscriber } from "@opentok/client";
 
 import useStyles from "./styles";
 import useSession from "hooks/session";
@@ -25,7 +24,6 @@ import RaiseHandButton from "components/RaiseHandButton";
 
 function EmployeePage(){
   const [ me, setMe ] = React.useState();
-  const [ presenter, setPresenter ] = React.useState<Subscriber|void>()
   const [ layout, setLayout ] = React.useState<string>("default");
   const mSession = useSession();
   const mStyles = useStyles();

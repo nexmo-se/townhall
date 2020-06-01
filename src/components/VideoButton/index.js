@@ -1,7 +1,5 @@
 // @flow
 import React from "react";
-import clsx from "clsx";
-import posed from "react-pose";
 
 import VideocamIcon from '@material-ui/icons/Videocam';
 import VideocamOffIcon from '@material-ui/icons/VideocamOff';

@@ -1,6 +1,6 @@
 // @flow
 import React from "react";
-import OT, { Publisher, Stream, OTError } from "@opentok/client";
+import OT, { Publisher, Stream } from "@opentok/client";
 import User from "entities/user";
 import useSession from "hooks/session";
 

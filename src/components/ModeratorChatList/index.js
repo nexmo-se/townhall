@@ -1,6 +1,5 @@
 // @flow
-import React from "react"
-import MessageAPI from "api/message";
+import React from "react";
 import useMessage from "hooks/message";
 
 import ChatBubble from "components/ChatBubble";

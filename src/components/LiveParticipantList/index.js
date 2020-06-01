@@ -1,11 +1,10 @@
 // @flow
 import React from "react";
-import User from "entities/user";
-import type { Node } from "react";
-import { Subscriber } from "@opentok/client";
+import type { Node } from "react"
 
 import useStyles from "./styles";
-import useSession from "hooks/session";
+import User from "entities/user";
+import { Subscriber } from "@opentok/client";
 
 import LiveParticipantItem from "components/LiveParticipantItem";
 
@@ -16,7 +15,6 @@ type Props = {
 
 function LiveParticipantList({ children, subscribers }:Props){
   const [ participants, setParticipants ] = React.useState<Array<User>>([]);
-  const mSession = useSession();
   const mStyles = useStyles();
 
   React.useEffect(() => {
@@ -30,8 +28,8 @@ function LiveParticipantList({ children, subscribers }:Props){
       user.subscriber = subscriber;
       return user;
     }).sort((a, b) => {
-      if(a.name < b.name) return -1;
-      else if(a.name > b.name) return 1;
+      if(a.name.toLowerCase() < b.name.toLowerCase()) return -1;
+      else if(a.name.toLowerCase() > b.name.toLowerCase()) return 1;
       else return 0;
     })
     setParticipants(participants);
