@@ -85,6 +85,15 @@ function LiveParticipantItem({ user, className, publisher, subscriber, additiona
     }
   }, [ mSession.changedStream, publisher, subscriber ]);
 
+  React.useEffect(() => {
+    const pubsub = (publisher)? publisher: (subscriber)? subscriber: null;
+    if(pubsub){
+      const { hasAudio, hasVideo } = pubsub.stream;
+      setHasAudio(hasAudio);
+      setHasVideo(hasVideo);
+    }
+  }, [ publisher, subscriber ])
+
   return (
     <div 
       className={clsx(
