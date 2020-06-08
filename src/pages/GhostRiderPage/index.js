@@ -7,8 +7,6 @@ import User from "entities/user";
 import useStyles from "./styles";
 import useSession from "hooks/session";
 import useSubscriber from "hooks/subscriber";
-import usePublisher from "hooks/publisher";
-import useMessage from "hooks/message";
 
 import BigName from "components/BigName";
 import LiveBadge from "components/LiveBadge";
@@ -17,21 +15,13 @@ import BlackLayer from "components/BlackLayer";
 import WhiteLayer from "components/WhiteLayer";
 import ChatList from "components/ChatList";
 import FullPageLoading from "components/FullPageLoading";
-import AskNameDialog from "components/AskNameDialog";
-import VideoControl from "components/VideoControl";
-import RaiseHandButton from "components/RaiseHandButton";
 
 function EmployeePage(){
-  const [ me, setMe ] = React.useState<User|void>(new User("Ghost Rider", "participant"));
+  const [ me ] = React.useState<User|void>(new User("Ghost Rider", "participant"));
   const [ layout, setLayout ] = React.useState<string>("default");
   const mSession = useSession();
   const mStyles = useStyles();
   const mSubscriber = useSubscriber();
-  const mPublisher = usePublisher();
-
-  function handleNameSubmit(user:User){
-    setMe(user);
-  }
 
   async function connect(){
     if(me){
@@ -81,11 +71,8 @@ function EmployeePage(){
         <BigName name={me.name} style={{ position: "absolute", top: 32, left: 32, zIndex: 2 }}/>
         <div className={mStyles.logoContainer}>
           <LiveBadge/>
-          {!mPublisher.publisher? <RaiseHandButton />: (
-            <VideoControl publisher={mPublisher.publisher} />
-          )}
         </div>
-        {/* <VonageLogo style={{ position: "absolute", bottom: 32, right: 32, zIndex: 2 }}/> */}
+        <VonageLogo style={{ position: "absolute", bottom: 32, right: 32, zIndex: 2 }}/>
       </div>
       <div className={mStyles.rightContainer}>
         <div className={mStyles.moderator}>
