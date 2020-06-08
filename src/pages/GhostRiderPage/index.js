@@ -16,7 +16,6 @@ import VonageLogo from "components/VonageLogo"
 import BlackLayer from "components/BlackLayer";
 import WhiteLayer from "components/WhiteLayer";
 import ChatList from "components/ChatList";
-import ChatInput from "components/ChatInput";
 import FullPageLoading from "components/FullPageLoading";
 import AskNameDialog from "components/AskNameDialog";
 import VideoControl from "components/VideoControl";
@@ -29,7 +28,6 @@ function EmployeePage(){
   const mStyles = useStyles();
   const mSubscriber = useSubscriber();
   const mPublisher = usePublisher();
-  const mMessage = useMessage();
 
   function handleNameSubmit(user:User){
     setMe(user);
@@ -51,41 +49,6 @@ function EmployeePage(){
   }, [ mSession.streams, mSession.session ]);
 
   React.useEffect(() => {
-    if(mMessage.forceVideo){
-      if(mMessage.forceVideo.user.id === mSession.session.connection.id){
-        mPublisher.publisher.publishVideo(mMessage.forceVideo.hasVideo)
-      } 
-    }
-  }, [ mMessage.forceVideo ]);
-
-  React.useEffect(() => {
-    if(mMessage.forceAudio){
-      if(mMessage.forceAudio.user.id === mSession.session.connection.id){
-        mPublisher.publisher.publishAudio(mMessage.forceAudio.hasAudio)
-      } 
-    }
-  }, [ mMessage.forceAudio ]);
-
-  React.useEffect(() => {
-    if(mSession.session && mMessage.forcePublish){
-      const { connection:localConnection } = mSession.session;
-      const { user } = mMessage.forcePublish;
-      if(localConnection.id === user.id && !mPublisher.publisher){
-        mPublisher.publish("main", user);
-      }
-    }
-  }, [ mSession.session, mMessage.forcePublish ]);
-
-  React.useEffect(() => {
-    if(mMessage.forceUnpublish){
-      if(mMessage.forceUnpublish.user.id === mSession.session.connection.id){
-        if(!mPublisher.publisher) throw new Error("No publisher found");
-        mSession.session.unpublish(mPublisher.publisher)
-      }
-    }
-  }, [ mMessage.forceUnpublish ]);
-
-  React.useEffect(() => {
     const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
       const { stream } = subscriber;
       if(stream.videoType === "screen") return true;
@@ -93,18 +56,9 @@ function EmployeePage(){
     });
     if(screenSubscribers.length > 0) setLayout("sharescreen")
     else setLayout("default");
-  }, [ mSubscriber.subscribers ])
+  }, [ mSubscriber.subscribers ]);
 
-  if(!me && !mSession.session) {
-    return (
-      <AskNameDialog 
-        pin="1123"
-        role="participant"
-        onSubmit={handleNameSubmit}
-      />
-    )
-  }
-  else if(me && !mSession.session) return <FullPageLoading />
+  if(me && !mSession.session) return <FullPageLoading />
   else if(me && mSession.session) return (
     <div className={mStyles.container}>
       <div className={mStyles.leftContainer}>
@@ -131,7 +85,7 @@ function EmployeePage(){
             <VideoControl publisher={mPublisher.publisher} />
           )}
         </div>
-        <VonageLogo style={{ position: "absolute", bottom: 32, right: 32, zIndex: 2 }}/>
+        {/* <VonageLogo style={{ position: "absolute", bottom: 32, right: 32, zIndex: 2 }}/> */}
       </div>
       <div className={mStyles.rightContainer}>
         <div className={mStyles.moderator}>
@@ -139,7 +93,6 @@ function EmployeePage(){
         </div>
         <div className={mStyles.chatContainer}>
           <ChatList/>
-          <ChatInput user={me} byPass={false}/>
         </div>
       </div>
     </div>

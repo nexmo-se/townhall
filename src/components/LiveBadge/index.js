@@ -31,6 +31,5 @@ function LiveBadge(props){
       <Circle pose={isVisible? "visible": "hidden"}>⚬</Circle>&nbsp;LIVE
     </div>
   )
-
 }
 export default LiveBadge;

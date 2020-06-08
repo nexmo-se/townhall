@@ -60,7 +60,6 @@ export default makeStyles(() => ({
     "& div": {
       marginLeft: 8,
       marginRight: 8,
-      borderRadius: "25%",
       height: "150px !important",
       width: "150px !important",
       overflow: "none",
