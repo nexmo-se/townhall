@@ -27,7 +27,13 @@ function usePublisher():Props{
     setStream(null);
   }
 
-  async function publish(containerId:string, user:User, nameDisplayMode?:string="on", extraData?:any){
+  async function publish(
+    containerId:string, 
+    user:User, 
+    nameDisplayMode?:string="on", 
+    extraData?:any,
+    onAccessDenied?:(user:User) => void
+  ){
     try{
       if(!mSession.session) throw new Error("You are not connected to session");
       const publisher = await new Promise((resolve, reject) => {
@@ -62,7 +68,8 @@ function usePublisher():Props{
       setPublisher(publisher);
     }catch(err){
       if(err.name === "OT_USER_MEDIA_ACCESS_DENIED"){
-        alert("Please enable camera and microphone permissions to continue. Please refresh the page.")
+        if(onAccessDenied) onAccessDenied(user);
+        alert("Please enable camera and microphone permissions to continue. Please refresh the page.");
       }else throw err;
     }
   }

@@ -42,6 +42,13 @@ function EmployeePage(){
     }
   }
 
+  function handleAccessDenied(user:User){
+    mSession.session.signal({
+      type: "force-publish-failed",
+      data: JSON.stringify(user.toJSON())
+    })
+  }
+
   React.useEffect(() => {
     connect();
   }, [ me ]);
@@ -71,7 +78,7 @@ function EmployeePage(){
       const { connection:localConnection } = mSession.session;
       const { user } = mMessage.forcePublish;
       if(localConnection.id === user.id && !mPublisher.publisher){
-        mPublisher.publish("main", user);
+        mPublisher.publish("main", user, undefined, undefined, handleAccessDenied);
       }
     }
   }, [ mSession.session, mMessage.forcePublish ]);
