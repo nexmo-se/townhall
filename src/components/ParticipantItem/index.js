@@ -48,7 +48,7 @@ function ParticipantItem({ user }:Props){
 
   React.useEffect(() => {
     if(mMessage.forcePublishFailed){
-      const { user:remoteUser } = mMessage.forcePublishFailed;
+      const { from:remoteUser } = mMessage.forcePublishFailed;
       if(remoteUser.id === user.id) setInviteDisabled(false);
     }
   }, [ mMessage.forcePublishFailed ])

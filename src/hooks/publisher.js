@@ -17,6 +17,7 @@ function usePublisher(containerId:string, autoLayout?:boolean=true):ReturnValue{
   const [ publisher, setPublisher ] = React.useState<Publisher>();
   const [ stream, setStream ] = React.useState<Stream>();
   const [ layoutManager, setLayoutManager ] = React.useState<LayoutManager>(new LayoutManager(containerId));
+  const [ onAccessDenied, setOnAccessDenied ] = React.useState<Function|void>();
   const mSession = useSession();
 
   function handleDestroyed(){
@@ -31,6 +32,11 @@ function usePublisher(containerId:string, autoLayout?:boolean=true):ReturnValue{
     setStream(null);
   }
 
+  function handleAccessDenied(){
+    alert("Please enable camera and microphone access to conitnue. Refresh the page when you are done.");
+    if(onAccessDenied) onAccessDenied();
+  }
+
   async function unpublish(){
     if(publisher) mSession.session.unpublish(publisher);
     else throw new Error("Cannot unpublish. No publisher found");
@@ -42,6 +48,7 @@ function usePublisher(containerId:string, autoLayout?:boolean=true):ReturnValue{
     extraData?:any,
     onAccessDenied?:(user:User) => void
   ){
+    setOnAccessDenied(onAccessDenied);
     try{
       if(!mSession.session) throw new Error("You are not connected to session");
       const options = { insertMode: "append" };
@@ -50,12 +57,10 @@ function usePublisher(containerId:string, autoLayout?:boolean=true):ReturnValue{
       publisher.on("destroyed", handleDestroyed);
       publisher.on("streamCreated", handleStreamCreated);
       publisher.on("streamDestroyed", handleStreamDestroyed);
+      publisher.on("accessDenied", handleAccessDenied)
       setPublisher(publisher);
     }catch(err){
-      if(err.name === "OT_USER_MEDIA_ACCESS_DENIED"){
-        if(onAccessDenied) onAccessDenied(user);
-        alert("Please enable camera and microphone permissions to continue. Please refresh the page.");
-      }else throw err;
+      console.log(err.stack);
     }
   }
 

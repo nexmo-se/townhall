@@ -64,9 +64,9 @@ export default function MessageProvider({ children }:Props){
         })
       });
 
-      mSession.session.on("signal:force-publish-failed", ({ data }) => {
+      mSession.session.on("signal:force-publish-failed", ({ data, from }) => {
         const user = User.fromJSON(JSON.parse(data));
-        setForcePublishFailed({ user })
+        setForcePublishFailed({ user, from })
       })
 
       mSession.session.on("signal:raise-hand", ({ data }) => {
