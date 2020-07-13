@@ -26,7 +26,7 @@ function CeoPage(){
   const [ user, setUser ] = React.useState<User|void>(new User("Presenter", "presenter"));
   const [ videoControlVisible, setVideoControlVisible ] = React.useState<boolean>(false);
   const mSession = useSession();
-  const mPublisher = usePublisher("cameraContainer");
+  const mPublisher = usePublisher("cameraContainer", true, false);
   const mScreenPublisher = usePublisher("cameraContainer");
   const mStyles = useStyles();
   const mMessage = useMessage();

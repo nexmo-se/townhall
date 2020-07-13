@@ -26,7 +26,7 @@ function ModeratorPage(){
   const [ me, setMe ] = React.useState<User|void>(new User("Moderator", "moderator"));
   const mStyles = useStyles();
   const mSession = useSession();
-  const mPublisher = usePublisher("cameraContainer");
+  const mPublisher = usePublisher("cameraContainer", true, false);
   const mScreenPublisher = usePublisher("cameraContainer");
   const mSubscriber = useSubscriber({ 
     moderator: "cameraContainer", 

@@ -13,11 +13,12 @@ type ReturnValue = {
   layoutManager:LayoutManager
 }
 
-function usePublisher(containerId:string, autoLayout?:boolean=true):ReturnValue{
+function usePublisher(containerId:string, autoLayout?:boolean=true, displayName?:boolean=true):ReturnValue{
   const [ publisher, setPublisher ] = React.useState<Publisher>();
   const [ stream, setStream ] = React.useState<Stream>();
   const [ layoutManager, setLayoutManager ] = React.useState<LayoutManager>(new LayoutManager(containerId));
   const [ onAccessDenied, setOnAccessDenied ] = React.useState<Function|void>();
+  const [ nameDisplayMode, setNameDisplayMode ] = React.useState<boolean>(displayName);
   const mSession = useSession();
 
   function handleDestroyed(){
@@ -51,7 +52,14 @@ function usePublisher(containerId:string, autoLayout?:boolean=true):ReturnValue{
     setOnAccessDenied(onAccessDenied);
     try{
       if(!mSession.session) throw new Error("You are not connected to session");
-      const options = { insertMode: "append" };
+      const options = { 
+        insertMode: "append",
+        name: user.name,
+        style: { 
+          buttonDisplayMode: "off",
+          nameDisplayMode: displayName? "on": "off"
+        }
+      };
       const finalOptions = Object.assign({}, options, extraData);
       const publisher = mSession.session.publish(containerId,finalOptions);
       publisher.on("destroyed", handleDestroyed);

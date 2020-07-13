@@ -25,7 +25,7 @@ function EmployeePage(){
   const [ me, setMe ] = React.useState<User|void>(new User("Participant", "participant"));
   const mSession = useSession();
   const mStyles = useStyles();
-  const mPublisher = usePublisher("cameraContainer");
+  const mPublisher = usePublisher("cameraContainer", true, false);
   const mMessage = useMessage();
   const mSubscriber = useSubscriber({
     moderator: "moderatorContainer",
