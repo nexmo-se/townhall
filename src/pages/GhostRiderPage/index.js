@@ -15,13 +15,17 @@ import BlackLayer from "components/BlackLayer";
 import WhiteLayer from "components/WhiteLayer";
 import ChatList from "components/ChatList";
 import FullPageLoading from "components/FullPageLoading";
+import LayoutContainer from "components/LayoutContainer";
 
 function EmployeePage(){
   const [ me ] = React.useState<User|void>(new User("Ghost Rider", "participant"));
-  const [ layout, setLayout ] = React.useState<string>("default");
   const mSession = useSession();
   const mStyles = useStyles();
-  const mSubscriber = useSubscriber();
+  const mSubscriber = useSubscriber({
+    moderator: "moderatorContainer",
+    camera: "cameraContainer",
+    screen: "cameraContainer"
+  });
 
   async function connect(){
     if(me){
@@ -38,34 +42,11 @@ function EmployeePage(){
     if(mSession.session) mSubscriber.subscribe(mSession.streams);
   }, [ mSession.streams, mSession.session ]);
 
-  React.useEffect(() => {
-    const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
-      const { stream } = subscriber;
-      if(stream.videoType === "screen") return true;
-      else return false;
-    });
-    if(screenSubscribers.length > 0) setLayout("sharescreen")
-    else setLayout("default");
-  }, [ mSubscriber.subscribers ]);
-
   if(me && !mSession.session) return <FullPageLoading />
   else if(me && mSession.session) return (
     <div className={mStyles.container}>
       <div className={mStyles.leftContainer}>
-        <div 
-          id="screen" 
-          className={clsx(
-            mStyles.videoContainer,
-            (layout === "sharescreen")? mStyles.visible: mStyles.hidden
-          )} 
-        />
-        <div
-          id="main" 
-          className={clsx(
-            mStyles.videoContainer,
-            (layout === "sharescreen")? mStyles.smallVideoContainer: ""
-          )}
-        />        
+        <LayoutContainer id="cameraContainer" size="big" />
         <BlackLayer/>
         <WhiteLayer/>
         <BigName name={me.name} style={{ position: "absolute", top: 32, left: 32, zIndex: 2 }}/>
@@ -76,7 +57,7 @@ function EmployeePage(){
       </div>
       <div className={mStyles.rightContainer}>
         <div className={mStyles.moderator}>
-          <div id="moderator" className={mStyles.videoContainer}/>
+          <LayoutContainer id="moderatorContainer" size="big" />
         </div>
         <div className={mStyles.chatContainer}>
           <ChatList/>

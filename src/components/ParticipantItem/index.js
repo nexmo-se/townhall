@@ -2,6 +2,8 @@
 import React from "react";
 import Avatar from 'react-avatar';
 import User from "entities/user";
+
+import useMessage from "hooks/message";
 import useSession from "hooks/session";
 
 type Props = { 
@@ -9,12 +11,14 @@ type Props = {
 };
 function ParticipantItem({ user }:Props){
   const [ isPublishing, setIsPublishing ] = React.useState<boolean>(true);
-  const [ isInviting, setIsInviting ] = React.useState<boolean>(false);
+  const [ isInviting, setIsInviting ] = React.useState<boolean>(false);  
+  const [ inviteDisabled, setInviteDisabled ] = React.useState<boolean>(false);
   const mSession = useSession();
+  const mMessage = useMessage();
 
   async function handleInviteClick(){
     try{
-      setIsInviting(true);
+      setInviteDisabled(true);
       if(!user.id) throw new Error("User does not have ID. Is someone hack my application");
       if(mSession.session){
         await new Promise((resolve, reject) => {
@@ -27,11 +31,7 @@ function ParticipantItem({ user }:Props){
           });
         });
       }
-    }catch(err){
-      console.log(err);
-    }finally{
-      setIsInviting(false)
-    }
+    }catch(err){}
   }
 
   React.useEffect(() => {
@@ -42,8 +42,16 @@ function ParticipantItem({ user }:Props){
         else return false;
       }).length > 0
       setIsPublishing(isPublishing);
+      setInviteDisabled(false);
     }
-  }, [ mSession.streams, user ])
+  }, [ mSession.streams, user ]);
+
+  React.useEffect(() => {
+    if(mMessage.forcePublishFailed){
+      const { from:remoteUser } = mMessage.forcePublishFailed;
+      if(remoteUser.id === user.id) setInviteDisabled(false);
+    }
+  }, [ mMessage.forcePublishFailed ])
 
   return (
     <div className="Vlt-card Vlt-card--plain Vlt-bg-aqua-lighter Vlt-card--lesspadding" style={{ marginTop: 8, marginBottom: 4 }}>
@@ -55,7 +63,7 @@ function ParticipantItem({ user }:Props){
             <button 
               className="Vlt-btn" 
               style={{ margin: 0 }}
-              disabled={isInviting}
+              disabled={inviteDisabled}
               onClick={handleInviteClick}
             >
               Invite live

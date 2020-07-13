@@ -15,6 +15,7 @@ export default function MessageProvider({ children }:Props){
   const [ forceAudio, setForceAudio ] = React.useState<any>();
   const [ forceUnpublish, setForceUnpublish ] = React.useState<any>();
   const [ forcePublish, setForcePublish ] = React.useState<any>();
+  const [ forcePublishFailed, setForcePublishFailed ] = React.useState<any>();
   const [ raisedHands, setRaisedHands ] = React.useState<Array<User>>([]);
   const [ messages, setMessages ] = React.useState<Array<Message>>([]);
   const mSession = useSession();
@@ -63,6 +64,11 @@ export default function MessageProvider({ children }:Props){
         })
       });
 
+      mSession.session.on("signal:force-publish-failed", ({ data, from }) => {
+        const user = User.fromJSON(JSON.parse(data));
+        setForcePublishFailed({ user, from })
+      })
+
       mSession.session.on("signal:raise-hand", ({ data }) => {
         setRaisedHands((prevRaisedHands) => {
           const jsonData = JSON.parse(data);
@@ -89,6 +95,7 @@ export default function MessageProvider({ children }:Props){
       forceAudio,
       forceUnpublish,
       forcePublish,
+      forcePublishFailed,
       raisedHands,
       removeRaisedHand,
       messages

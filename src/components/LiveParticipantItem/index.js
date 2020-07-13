@@ -87,7 +87,7 @@ function LiveParticipantItem({ user, className, publisher, subscriber, additiona
 
   React.useEffect(() => {
     const pubsub = (publisher)? publisher: (subscriber)? subscriber: null;
-    if(pubsub){
+    if(pubsub?.stream){
       const { hasAudio, hasVideo } = pubsub.stream;
       setHasAudio(hasAudio);
       setHasVideo(hasVideo);

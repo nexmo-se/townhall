@@ -8,6 +8,9 @@ class User{
   connection:Connection|void;
   subscriber:Subscriber|void;
   role:string
+  system:User;
+
+  static system:User;
 
   constructor(name:string, role:string, id?:string, stream?:Stream){
     this.name = name;
@@ -23,6 +26,11 @@ class User{
       role: this.role
     }
     return JSON.parse(JSON.stringify(jsonData));
+  }
+
+  static get systemUser(){
+    if(!User.system) User.system = new User("System", "system");
+    return User.system;
   }
 
   static fromJSON(data:any):User{

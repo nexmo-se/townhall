@@ -2,6 +2,7 @@
 import { makeStyles } from "@material-ui/styles";
 export default makeStyles(() => ({
   visible: { display: "inherit" },
+  black: { backgroundColor: "black" }, 
   hidden: { display: "none !important" },
   container: { 
     width: "100vw", 
@@ -9,8 +10,10 @@ export default makeStyles(() => ({
     display: "flex", 
     flexDirection: "row" 
   },
+  videoControl: { marginTop: 16 },
   leftContainer: { 
     flex: 3, 
+    display: "flex",
     position: "relative" 
   },
   logoContainer: { 
@@ -29,16 +32,14 @@ export default makeStyles(() => ({
     display: "flex", 
     flexDirection: "column"
   },
-  videoContainer: { 
+  layoutContainer: { 
     width: "100%", 
     height: "100%", 
-    zIndex: 0,
-    display: "flex",
-    flexWrap: "wrap",
-    "& div": {
-      flexBasis: "50%",
-      flexGrow: 1
-    }
+    zIndex: 0
+  },
+  moderatorVideo: {
+    width: "100%",
+    height: "100%"
   },
   moderator: { 
     flex: 1, 
