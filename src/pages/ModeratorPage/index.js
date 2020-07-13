@@ -50,7 +50,7 @@ function ModeratorPage(){
       const screenUser = new User("sharescreen", "sharescreen");
       await mScreenPublisher.publish(screenUser, { videoSource: "screen" });
     }else if(mSession.session && mScreenPublisher.stream){
-      mSession.session.unpublish(mScreenPublisher.publisher);
+      mScreenPublisher.unpublish();
     }
   }
 
