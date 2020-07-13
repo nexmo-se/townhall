@@ -23,7 +23,7 @@ import ShareScreenButton from "components/ShareScreenButton";
 import LayoutContainer from "components/LayoutContainer";
 
 function CeoPage(){
-  const [ user, setUser ] = React.useState<User|void>(new User("Presenter", "presenter"));
+  const [ user, setUser ] = React.useState<User|void>();
   const [ videoControlVisible, setVideoControlVisible ] = React.useState<boolean>(false);
   const mSession = useSession();
   const mPublisher = usePublisher("cameraContainer", true, false);

@@ -23,7 +23,7 @@ import ShareScreenButton from "components/ShareScreenButton";
 import LayoutContainer from "components/LayoutContainer";
 
 function ModeratorPage(){
-  const [ me, setMe ] = React.useState<User|void>(new User("Moderator", "moderator"));
+  const [ me, setMe ] = React.useState<User|void>();
   const mStyles = useStyles();
   const mSession = useSession();
   const mPublisher = usePublisher("cameraContainer", true, false);

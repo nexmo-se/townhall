@@ -22,7 +22,7 @@ import RaiseHandButton from "components/RaiseHandButton";
 import LayoutContainer from "components/LayoutContainer";
 
 function EmployeePage(){
-  const [ me, setMe ] = React.useState<User|void>(new User("Participant", "participant"));
+  const [ me, setMe ] = React.useState<User|void>();
   const mSession = useSession();
   const mStyles = useStyles();
   const mPublisher = usePublisher("cameraContainer", true, false);
