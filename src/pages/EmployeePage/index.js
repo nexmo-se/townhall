@@ -21,15 +21,19 @@ import FullPageLoading from "components/FullPageLoading";
 import AskNameDialog from "components/AskNameDialog";
 import VideoControl from "components/VideoControl";
 import RaiseHandButton from "components/RaiseHandButton";
+import LayoutContainer from "components/LayoutContainer";
 
 function EmployeePage(){
-  const [ me, setMe ] = React.useState();
-  const [ layout, setLayout ] = React.useState<string>("default");
+  const [ me, setMe ] = React.useState<User|void>(new User("Participant", "participant"));
   const mSession = useSession();
   const mStyles = useStyles();
-  const mSubscriber = useSubscriber();
-  const mPublisher = usePublisher();
+  const mPublisher = usePublisher("cameraContainer");
   const mMessage = useMessage();
+  const mSubscriber = useSubscriber({
+    moderator: "moderatorContainer",
+    camera: "cameraContainer",
+    screen: "cameraContainer"
+  });
 
   function handleNameSubmit(user:User){
     setMe(user);
@@ -78,7 +82,7 @@ function EmployeePage(){
       const { connection:localConnection } = mSession.session;
       const { user } = mMessage.forcePublish;
       if(localConnection.id === user.id && !mPublisher.publisher){
-        mPublisher.publish("main", user, undefined, undefined, handleAccessDenied);
+        mPublisher.publish("layoutContainer", user, {}, handleAccessDenied);
       }
     }
   }, [ mSession.session, mMessage.forcePublish ]);
@@ -91,16 +95,6 @@ function EmployeePage(){
       }
     }
   }, [ mMessage.forceUnpublish ]);
-
-  React.useEffect(() => {
-    const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
-      const { stream } = subscriber;
-      if(stream.videoType === "screen") return true;
-      else return false;
-    });
-    if(screenSubscribers.length > 0) setLayout("sharescreen")
-    else setLayout("default");
-  }, [ mSubscriber.subscribers ])
 
   if(!me && !mSession.session) {
     return (
@@ -115,20 +109,7 @@ function EmployeePage(){
   else if(me && mSession.session) return (
     <div className={mStyles.container}>
       <div className={mStyles.leftContainer}>
-        <div 
-          id="screen" 
-          className={clsx(
-            mStyles.videoContainer,
-            (layout === "sharescreen")? mStyles.visible: mStyles.hidden
-          )} 
-        />
-        <div
-          id="main" 
-          className={clsx(
-            mStyles.videoContainer,
-            (layout === "sharescreen")? mStyles.smallVideoContainer: ""
-          )}
-        />        
+        <LayoutContainer id="cameraContainer" size="big" />
         <BlackLayer/>
         <WhiteLayer/>
         <BigName name={me.name} style={{ position: "absolute", top: 32, left: 32, zIndex: 2 }}/>
@@ -142,7 +123,7 @@ function EmployeePage(){
       </div>
       <div className={mStyles.rightContainer}>
         <div className={mStyles.moderator}>
-          <div id="moderator" className={mStyles.videoContainer}/>
+          <LayoutContainer id="moderatorContainer" size="big" />
         </div>
         <div className={mStyles.chatContainer}>
           <ChatList/>

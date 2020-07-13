@@ -1,6 +1,7 @@
 // @flow
 import React from "react";
 import clsx from "clsx";
+import LayoutManager from "utils/layout-manager";
 import CredentialAPI from "api/credential";
 import User from "entities/user";
 
@@ -21,16 +22,21 @@ import FullPageLoading from "components/FullPageLoading";
 import VideoControl from "components/VideoControl";
 import AskNameDialog from "components/AskNameDialog";
 import ShareScreenButton from "components/ShareScreenButton";
+import LayoutContainer from "components/LayoutContainer";
+import MainScreen from "components/MainScreen";
 
 function CeoPage(){
-  const [ user, setUser ] = React.useState<User|void>();
-  const [ layout, setLayout ] = React.useState<string>("default");
+  const [ user, setUser ] = React.useState<User|void>(new User("Presenter", "presenter"));
   const mSession = useSession();
-  const mPublisher = usePublisher();
-  const mScreenPublisher = usePublisher();
+  const mPublisher = usePublisher("cameraContainer");
+  const mScreenPublisher = usePublisher("cameraContainer");
   const mStyles = useStyles();
   const mMessage = useMessage();
-  const mSubscriber = useSubscriber();
+  const mSubscriber = useSubscriber({ 
+    moderator: "moderatorContainer", 
+    camera: "cameraContainer", 
+    screen: "cameraContainer" 
+  });
 
   function handleSubmit(user:User){
     setUser(user);
@@ -46,18 +52,18 @@ function CeoPage(){
   async function handleShareScreenClick(){
     if(mSession.session && !mScreenPublisher.stream){
       const screenUser = new User("sharescreen", "sharescreen");
-      await mScreenPublisher.publish("screen", screenUser, "off", { videoSource: "screen" });
+      mScreenPublisher.publish(screenUser, { videoSource: "screen", width: "100%", height: "100%" });
     }else if(mSession.session && mScreenPublisher.stream){
-      mSession.session.unpublish(mScreenPublisher.publisher);
+      mScreenPublisher.unpublish();
     }
   }
 
   React.useEffect(() => {
-    connect()
+    if(user) connect()
   }, [ user ]);
 
   React.useEffect(() => {
-    if(mSession.session) mPublisher.publish("main", user, "off")
+    if(mSession.session) mPublisher.publish(user);
   }, [ mSession.session ]);
 
   React.useEffect(() => {
@@ -83,8 +89,7 @@ function CeoPage(){
   React.useEffect(() => {
     if(mMessage.forceUnpublish){
       if(mMessage.forceUnpublish.user.id === mSession.session.connection.id){
-        if(!mPublisher.publisher) throw new Error("No publisher found");
-        mSession.session.unpublish(mPublisher.publisher)
+        mPublisher.unpublish();
       }
     }
   }, [ mMessage.forceUnpublish ])
@@ -94,20 +99,10 @@ function CeoPage(){
       const { connection:localConnection } = mSession.session;
       const { user } = mMessage.forcePublish;
       if(localConnection.id === user.id && !mPublisher.publisher){
-        mPublisher.publish("main", user);
+        mPublisher.publish(user);
       }
     }
   }, [ mSession.session, mMessage.forcePublish ]);
-
-  React.useEffect(() => {
-    const screenSubscribers = mSubscriber.subscribers.filter((subscriber) => {
-      const { stream } = subscriber;
-      if(stream.videoType === "screen") return true;
-      else return false;
-    });
-    if(screenSubscribers.length > 0 || mScreenPublisher.stream) setLayout("sharescreen")
-    else if(!mScreenPublisher.stream) setLayout("default");
-  }, [ mSubscriber.subscribers, mScreenPublisher.stream ]);
 
   if(!user && !mSession.session){
     return (
@@ -122,21 +117,8 @@ function CeoPage(){
   else if(user && mSession.session) return (
     <React.Fragment>
       <div className={mStyles.container}>
-        <div className={mStyles.leftContainer}>
-          <div 
-            id="screen" 
-            className={clsx(
-              mStyles.videoContainer,
-              (layout === "sharescreen")? mStyles.visible: mStyles.hidden
-            )} 
-          />
-          <div 
-            id="main" 
-            className={clsx(
-              mStyles.videoContainer,
-              (layout === "sharescreen")? mStyles.smallVideoContainer: ""
-            )}
-          />
+        <div className={clsx(mStyles.leftContainer, mStyles.black)}>
+          <LayoutContainer id="cameraContainer" size="big" />
           <BlackLayer/>
           <WhiteLayer/>
           <BigName 
@@ -169,7 +151,7 @@ function CeoPage(){
         </div>
         <div className={mStyles.rightContainer}>
           <div className={mStyles.moderator}>
-            <div id="moderator" className={mStyles.videoContainer}/>
+            <LayoutContainer id="moderatorContainer" size="big" />
           </div>
           <div className={mStyles.chatContainer}>
             <ChatList/>
