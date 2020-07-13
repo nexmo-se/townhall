@@ -10,6 +10,7 @@ export default makeStyles(() => ({
     display: "flex", 
     flexDirection: "row" 
   },
+  videoControl: { marginTop: 16 },
   leftContainer: { 
     flex: 3, 
     display: "flex",

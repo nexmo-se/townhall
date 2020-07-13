@@ -11,10 +11,8 @@ import usePublisher from "hooks/publisher";
 import useMessage from "hooks/message";
 import useSubscriber from "hooks/subscriber";
 
-import BigName from "components/BigName";
 import LiveBadge from "components/LiveBadge";
 import VonageLogo from "components/VonageLogo"
-import BlackLayer from "components/BlackLayer";
 import WhiteLayer from "components/WhiteLayer";
 import ChatList from "components/ChatList";
 import ChatInput from "components/ChatInput";
@@ -23,10 +21,10 @@ import VideoControl from "components/VideoControl";
 import AskNameDialog from "components/AskNameDialog";
 import ShareScreenButton from "components/ShareScreenButton";
 import LayoutContainer from "components/LayoutContainer";
-import MainScreen from "components/MainScreen";
 
 function CeoPage(){
   const [ user, setUser ] = React.useState<User|void>(new User("Presenter", "presenter"));
+  const [ videoControlVisible, setVideoControlVisible ] = React.useState<boolean>(false);
   const mSession = useSession();
   const mPublisher = usePublisher("cameraContainer");
   const mScreenPublisher = usePublisher("cameraContainer");
@@ -40,6 +38,14 @@ function CeoPage(){
 
   function handleSubmit(user:User){
     setUser(user);
+  }
+
+  function handleMouseOver(){
+    setVideoControlVisible(true);
+  }
+
+  function handleMouseOut(){
+    setVideoControlVisible(false);
   }
 
   async function connect(){
@@ -119,26 +125,9 @@ function CeoPage(){
       <div className={mStyles.container}>
         <div className={clsx(mStyles.leftContainer, mStyles.black)}>
           <LayoutContainer id="cameraContainer" size="big" />
-          <BlackLayer/>
           <WhiteLayer/>
-          <BigName 
-            name={user.name} 
-            style={{ 
-              position: "absolute", 
-              top: 32, 
-              left: 32, 
-              zIndex: 2 
-            }}
-          />
           <div className={mStyles.logoContainer}>
             <LiveBadge/>
-            <VideoControl publisher={mPublisher.publisher}>
-              <ShareScreenButton 
-                style={{ marginRight: 8 }}
-                onClick={handleShareScreenClick}
-                isSharing={!!mScreenPublisher.stream}
-              />
-            </VideoControl>
           </div>
           <VonageLogo 
             style={{ 
@@ -152,6 +141,19 @@ function CeoPage(){
         <div className={mStyles.rightContainer}>
           <div className={mStyles.moderator}>
             <LayoutContainer id="moderatorContainer" size="big" />
+          </div>
+          <div className={mStyles.videoControl}>
+            <h4 className="Vlt-center">My Control</h4>
+            <VideoControl 
+              publisher={mPublisher.publisher} 
+              hidden={!videoControlVisible}
+            >
+              <ShareScreenButton 
+                style={{ marginRight: 8 }}
+                onClick={handleShareScreenClick}
+                isSharing={!!mScreenPublisher.stream}
+              />
+            </VideoControl>
           </div>
           <div className={mStyles.chatContainer}>
             <ChatList/>

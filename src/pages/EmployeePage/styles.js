@@ -4,6 +4,7 @@ export default makeStyles(() => ({
   visible: { display: "inherit" },
   black: { backgroundColor: "black" },
   hidden: { display: "none !important" },
+  videoControl: { marginTop: 16 },
   container: { 
     width: "100vw", 
     height: "100vh", 

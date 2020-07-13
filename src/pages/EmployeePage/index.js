@@ -10,10 +10,8 @@ import useSubscriber from "hooks/subscriber";
 import usePublisher from "hooks/publisher";
 import useMessage from "hooks/message";
 
-import BigName from "components/BigName";
 import LiveBadge from "components/LiveBadge";
 import VonageLogo from "components/VonageLogo"
-import BlackLayer from "components/BlackLayer";
 import WhiteLayer from "components/WhiteLayer";
 import ChatList from "components/ChatList";
 import ChatInput from "components/ChatInput";
@@ -109,21 +107,25 @@ function EmployeePage(){
   else if(me && mSession.session) return (
     <div className={mStyles.container}>
       <div className={mStyles.leftContainer}>
-        <LayoutContainer id="cameraContainer" size="big" />
-        <BlackLayer/>
-        <WhiteLayer/>
-        <BigName name={me.name} style={{ position: "absolute", top: 32, left: 32, zIndex: 2 }}/>
+        <LayoutContainer id="cameraContainer" size="big" />        
+        <WhiteLayer />
         <div className={mStyles.logoContainer}>
           <LiveBadge/>
-          {!mPublisher.publisher? <RaiseHandButton />: (
-            <VideoControl publisher={mPublisher.publisher} />
-          )}
+          {!mPublisher.publisher? <RaiseHandButton />: null}
         </div>
         <VonageLogo style={{ position: "absolute", bottom: 32, right: 32, zIndex: 2 }}/>
       </div>
       <div className={mStyles.rightContainer}>
         <div className={mStyles.moderator}>
           <LayoutContainer id="moderatorContainer" size="big" />
+        </div>
+        <div className={mStyles.videoControl}>
+          {!mPublisher.publisher? null: (
+            <React.Fragment>
+              <h4 className="Vlt-center">My Control</h4>
+              <VideoControl publisher={mPublisher.publisher} />
+            </React.Fragment>
+          )}
         </div>
         <div className={mStyles.chatContainer}>
           <ChatList/>

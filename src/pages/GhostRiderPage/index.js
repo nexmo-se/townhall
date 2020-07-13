@@ -24,7 +24,7 @@ function EmployeePage(){
   const mSubscriber = useSubscriber({
     moderator: "moderatorContainer",
     camera: "cameraContainer",
-    screen: "screenContainer"
+    screen: "cameraContainer"
   });
 
   async function connect(){
@@ -47,7 +47,6 @@ function EmployeePage(){
     <div className={mStyles.container}>
       <div className={mStyles.leftContainer}>
         <LayoutContainer id="cameraContainer" size="big" />
-        <LayoutContainer id="screenContainer" size="big" hidden />   
         <BlackLayer/>
         <WhiteLayer/>
         <BigName name={me.name} style={{ position: "absolute", top: 32, left: 32, zIndex: 2 }}/>

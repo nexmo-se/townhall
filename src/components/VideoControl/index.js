@@ -1,6 +1,6 @@
 // @flow
-
 import React from "react";
+import clsx from "clsx";
 import type { Node } from "react";
 
 import useStyles from "./styles";
@@ -13,12 +13,12 @@ import VideoButton from "components/VideoButton";
 
 type Props = {
   sizeMultiplier?:number,
-  style?:any|void,
   publisher:Publisher|void,
+  hidden?:boolean,
   children?:Node
 }
 
-function VideoControl({ sizeMultiplier=1, style, publisher, children }:Props){
+function VideoControl({ sizeMultiplier=1, publisher, children, hidden=true }:Props){
   const [ hasAudio, setHasAudio ] = React.useState(true);
   const [ hasVideo, setHasVideo ] = React.useState(true);
   const mSession = useSession();
@@ -57,11 +57,11 @@ function VideoControl({ sizeMultiplier=1, style, publisher, children }:Props){
 
   React.useEffect(() => {
     if(publisher) publisher.publishVideo(hasVideo);
-  }, [ hasVideo ])
+  }, [ hasVideo ]);
 
   if(!publisher) return null;
   return(
-    <div className={mStyles.root}>
+    <div id="video-control" className={mStyles.root}>
       {children}
       <VideoButton 
         hasVideo={hasVideo} 
@@ -73,9 +73,7 @@ function VideoControl({ sizeMultiplier=1, style, publisher, children }:Props){
         onClick={handleAudioClick}
         style={{ marginRight: 8 }}
       />
-      <HangupButton 
-        onClick={handleHangupClick}
-      />
+      <HangupButton onClick={handleHangupClick} />
     </div>
   )
 }
