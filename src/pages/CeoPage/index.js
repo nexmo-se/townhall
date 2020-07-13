@@ -143,7 +143,7 @@ function CeoPage(){
             <LayoutContainer id="moderatorContainer" size="big" />
           </div>
           <div className={mStyles.videoControl}>
-            <h4 className="Vlt-center">My Control</h4>
+            <h4 className="Vlt-center">My Controls</h4>
             <VideoControl 
               publisher={mPublisher.publisher} 
               hidden={!videoControlVisible}

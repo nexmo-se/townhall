@@ -122,7 +122,7 @@ function EmployeePage(){
         <div className={mStyles.videoControl}>
           {!mPublisher.publisher? null: (
             <React.Fragment>
-              <h4 className="Vlt-center">My Control</h4>
+              <h4 className="Vlt-center">My Controls</h4>
               <VideoControl publisher={mPublisher.publisher} />
             </React.Fragment>
           )}
