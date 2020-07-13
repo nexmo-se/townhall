@@ -80,7 +80,7 @@ function EmployeePage(){
       const { connection:localConnection } = mSession.session;
       const { user } = mMessage.forcePublish;
       if(localConnection.id === user.id && !mPublisher.publisher){
-        mPublisher.publish("layoutContainer", user, {}, handleAccessDenied);
+        mPublisher.publish("layoutContainer", user, handleAccessDenied);
       }
     }
   }, [ mSession.session, mMessage.forcePublish ]);
@@ -89,7 +89,7 @@ function EmployeePage(){
     if(mMessage.forceUnpublish){
       if(mMessage.forceUnpublish.user.id === mSession.session.connection.id){
         if(!mPublisher.publisher) throw new Error("No publisher found");
-        mSession.session.unpublish(mPublisher.publisher)
+        mPublisher.unpublish()
       }
     }
   }, [ mMessage.forceUnpublish ]);
