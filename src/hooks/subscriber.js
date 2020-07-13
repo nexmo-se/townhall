@@ -72,7 +72,7 @@ function useSubscriber({ moderator, screen, camera, custom }:Props){
     }catch(err){
       console.log(err.stack);
     }
-  }, [ subscribers ])
+  }, [ subscribers ]);
 
   return { subscribe, subscribers }
 }
