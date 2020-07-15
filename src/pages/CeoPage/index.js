@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 import clsx from "clsx";
-import LayoutManager from "utils/layout-manager";
+import config from "config";
 import CredentialAPI from "api/credential";
 import User from "entities/user";
 
@@ -113,7 +113,7 @@ function CeoPage(){
   if(!user && !mSession.session){
     return (
       <AskNameDialog 
-        pin="3345"
+        pin={config.presenterPin}
         role="presenter"
         onSubmit={handleSubmit}
       />
