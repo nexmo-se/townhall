@@ -9,8 +9,7 @@
   "env": {
     "API_KEY": {
       "desription": "Vonage Video API - API Key",
-      "required": true,
-      "value": "true"
+      "required": true
     },
     "API_SECRET" : {
       "description": "Vonage Video API - API Secret",
