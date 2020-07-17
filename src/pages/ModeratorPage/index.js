@@ -1,7 +1,7 @@
 // @flow
 import React from "react";
 import clsx from "clsx";
-import LayoutManager from "utils/layout-manager";
+import config from "config";
 import User from "entities/user";
 import CredentialAPI from "api/credential";
 
@@ -69,7 +69,7 @@ function ModeratorPage(){
   if(!me && !mSession.session) {
     return (
       <AskNameDialog 
-        pin="5523"
+        pin={config.moderatorPin}
         role="moderator"
         onSubmit={handleNameSubmit}
       />

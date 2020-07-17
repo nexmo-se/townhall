@@ -1,0 +1,36 @@
+{
+  "name": "Townhall",
+  "description": "A reference application for conducting a large scale Townhall  ",
+  "repository": "https://github.com/nexmo-se/townhall",
+  "logo": "https://node-js-sample.herokuapp.com/node.png",
+  "addons": [
+    "heroku-postgresql:hobby-dev"
+  ],
+  "env": {
+    "API_KEY": {
+      "desription": "Vonage Video API - API Key",
+      "required": true,
+      "value": "true"
+    },
+    "API_SECRET" : {
+      "description": "Vonage Video API - API Secret",
+      "required": true
+    },
+    "REACT_APP_ROOM_NAME": {
+      "description": "Your Townhall application room name",
+      "required": true
+    },
+    "REACT_APP_PRESENTER_PIN": {
+      "description": "Pin for presenter to log in",
+      "required": true
+    },
+    "REACT_APP_MODERATOR_PIN": {
+      "description": "Pin for moderator to log in",
+      "required": true
+    },
+    "REACT_APP_PARTICIPANT_PIN": {
+      "description": "Pin for participant to log in",
+      "required": true
+    }
+  }
+}

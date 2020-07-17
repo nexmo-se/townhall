@@ -8,8 +8,13 @@
     "@material-ui/styles": "^4.9.10",
     "@opentok/client": "^2.16.3",
     "@vonagevolta/volta2": "^0.0.53",
+    "cors": "^2.8.5",
+    "express": "^4.17.1",
     "flow-bin": "^0.123.0",
+    "module-alias": "^2.2.2",
+    "opentok": "^2.10.0",
     "opentok-layout-js": "^3.7.1",
+    "pg": "^8.3.0",
     "react": "^16.11.0",
     "react-avatar": "^3.7.0",
     "react-dom": "^16.11.0",
@@ -23,12 +28,17 @@
   "scripts": {
     "start": "react-scripts start",
     "start:heroku": "serve -s build",
+    "start:express": "nodemon --exec node -r dotenv/config server/index.js",
+    "start:express:prod": "node -r dotenv/config server/index.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
     "extends": "react-app"
+  },
+  "_moduleAliases": {
+    "@app": "server/app"
   },
   "browserslist": {
     "production": [
@@ -41,5 +51,8 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.4"
   }
 }
