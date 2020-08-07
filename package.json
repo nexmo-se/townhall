@@ -3,27 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@material-ui/core": "^4.5.2",
-    "@material-ui/icons": "^4.5.1",
-    "@material-ui/styles": "^4.9.10",
-    "@opentok/client": "^2.16.3",
-    "@vonagevolta/volta2": "^0.0.53",
-    "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "flow-bin": "^0.123.0",
-    "module-alias": "^2.2.2",
-    "opentok": "^2.10.0",
-    "opentok-layout-js": "^3.7.1",
-    "pg": "^8.3.0",
-    "react": "^16.11.0",
-    "react-avatar": "^3.7.0",
-    "react-dom": "^16.11.0",
-    "react-pose": "^4.0.9",
-    "react-router-dom": "^5.1.2",
+    "@material-ui/core": "4.5.2",
+    "@material-ui/icons": "4.5.1",
+    "@material-ui/styles": "4.9.10",
+    "@opentok/client": "2.16.3",
+    "@vonagevolta/volta2": "0.0.53",
+    "cors": "2.8.5",
+    "express": "4.17.1",
+    "flow-bin": "0.123.0",
+    "module-alias": "2.2.2",
+    "opentok": "2.10.0",
+    "opentok-layout-js": "3.7.1",
+    "pg": "8.3.0",
+    "react": "16.11.0",
+    "react-avatar": "3.7.0",
+    "react-dom": "16.11.0",
+    "react-pose": "4.0.9",
+    "react-router-dom": "5.1.2",
     "react-scripts": "3.4.0",
-    "react-spinners": "^0.8.3",
-    "serve": "^11.3.0",
-    "uuid": "^3.3.3"
+    "react-spinners": "0.8.3",
+    "serve": "11.3.0",
+    "uuid": "3.3.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -53,6 +53,6 @@
     ]
   },
   "devDependencies": {
-    "nodemon": "^2.0.4"
+    "nodemon": "2.0.4"
   }
 }
