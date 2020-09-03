@@ -3,7 +3,15 @@ Cannot wait to deploy the Townhall application? You can directly click below `De
 
 [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
-To deploy yourself, you can scroll down to Deployment section
+To deploy yourself, you can scroll down to Deployment section.
+
+Once the application is deployed, you can access it using below information
+
+  - Presenter -- `https://{url}/presenter`
+  - Participant -- `https://{url}/participant`
+  - Moderator -- `https://{url}/moderator`
+  
+Replace the `url` with your deployed URL. If you are using Heroku to deploy, the `url` might looks like `appname.herokuapp.com`. 
 
 ## Introduction
 The townhall application is a reference code where you can easily deploy. This features.
@@ -26,7 +34,7 @@ You need to setup some environment variables
   - `REACT_APP_MODERATOR_PIN` -- pin number for moderator to join in
   - `REACT_APP_PARTICIPANT_PIN` -- pin number for participant to join in
 
-## architecture
+## Architecture
 This townhall application contains `backend` and `frontend`. However, the `backend` needs a database to store session information. You need to install `postgres` for the database. Any other than `postgres` will not work.
 
   - Backend -- we use `express`
