@@ -5,7 +5,7 @@ import config from "config";
 
 import useStyles from "./styles";
 
-import Button from "../../components/Button";
+import Button from "components/Button";
 import VonageLogo from "components/VonageLogo";
 import { Link } from "react-router-dom";
 import { useHistory } from "react-router";
