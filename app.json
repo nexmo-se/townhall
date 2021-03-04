@@ -4,7 +4,12 @@
   "repository": "https://github.com/nexmo-se/townhall",
   "logo": "https://node-js-sample.herokuapp.com/node.png",
   "addons": [
-    "heroku-postgresql:hobby-dev"
+    {
+      "plan": "heroku-postgresql:hobby-dev",
+      "options": {
+        "version": "11"
+      }
+    }
   ],
   "env": {
     "API_KEY": {
