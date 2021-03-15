@@ -1,13 +1,14 @@
-import React from 'react';
+import React from "react";
 
-import SessionProvider from 'contexts/session';
+import SessionProvider from "contexts/session";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 
 import CeoPage from "pages/CeoPage";
 import EmployeePage from "pages/EmployeePage";
 import ModeratorPage from "pages/ModeratorPage";
 import GhostRiderPage from "pages/GhostRiderPage";
-import MessageProvider from 'contexts/message';
+import MessageProvider from "contexts/message";
+import IndexPage from "pages/IndexPage";
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
       <SessionProvider>
         <MessageProvider>
           <Switch>
+            <Route exact path="/" component={IndexPage} />
             <Route path="/presenter" component={CeoPage} />
             <Route path="/participant" component={EmployeePage} />
             <Route path="/moderator" component={ModeratorPage} />
