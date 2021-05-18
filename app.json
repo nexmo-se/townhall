@@ -7,12 +7,16 @@
     {
       "plan": "heroku-postgresql:hobby-dev",
       "options": {
-        "version": "11",
-        "sslmode": "no-verify"
+        "version": "11"
       }
     }
   ],
   "env": {
+    "PGSSLMODE": {
+      "description": "SSL Mode for PG. Set it to no-verify",
+      "value": "no-verify",
+      "required": true
+    },
     "API_KEY": {
       "desription": "Vonage Video API - API Key",
       "required": true
