@@ -1,7 +1,7 @@
 # Townhall
 Cannot wait to deploy the Townhall application? You can directly click below `Deploy to Heroku` button.
 
-[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+[![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/nexmo-se/townhall)
 
 To deploy yourself, you can scroll down to Deployment section.
 
