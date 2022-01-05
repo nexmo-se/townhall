@@ -6,7 +6,7 @@
     "@material-ui/core": "4.5.2",
     "@material-ui/icons": "4.5.1",
     "@material-ui/styles": "4.9.10",
-    "@opentok/client": "2.20.0",
+    "@opentok/client": "2.21.4",
     "@vonagevolta/volta2": "0.0.53",
     "cors": "2.8.5",
     "express": "4.17.1",
